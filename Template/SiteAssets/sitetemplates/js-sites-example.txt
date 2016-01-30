@@ -11,7 +11,12 @@
         "RoleAssignments": [ ]
       },
       "Folders": [ ],
-      "ContentTypeBindings": [ ],
+      "RemoveExistingContentTypes":true,
+      "ContentTypeBindings": [
+        { 
+            "ContentTypeId": "0x010100153373331FC74B178F6411057C1CFEB4"
+        }
+      ],
       "Views": [ ]
     },
     {

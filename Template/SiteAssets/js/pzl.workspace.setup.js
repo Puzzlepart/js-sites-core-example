@@ -40,6 +40,11 @@ var Pzl;
                 UpdateWebPropertyBag("_Port_WebConfigured", "1").then(() => def.resolve());
                 return def.promise();
             }
+            function SetNotConfigured() {
+                var def = jQuery.Deferred();
+                UpdateWebPropertyBag("_Port_WebConfigured", "0").then(() => def.resolve());
+                return def.promise();
+            }
             function Reload() {
                 window.location.href = window.location.href;
             }
@@ -70,8 +75,9 @@ var Pzl;
                     return;
                 }
                 Pzl.Sites.Core.init(siteTemplateConfig, {
-                    On: true,
-                    LoggingFolder: `${_spPageContextInfo.siteServerRelativeUrl}/siteassets/js-sites-core/logs`
+                    "Logging": {
+                        "On": true,
+                        "LoggingFolder": _spPageContextInfo.siteServerRelativeUrl + "/SiteAssets/logs" }
                 }).then(() => {
                     SetIsConfigured().then(() => Reload());
                 });
@@ -83,6 +89,14 @@ var Pzl;
                 });
             }
             Setup.AttemptConfiguration = AttemptConfiguration;
+            function RerunConfiguration() {
+                SetNotConfigured().then(() => {
+                    GetSiteTemplate().then(siteTemplate => {
+                        SetupSite(siteTemplate);
+                    });
+                });
+            }
+            Setup.RerunConfiguration = RerunConfiguration;
         })(Setup = Workspace.Setup || (Workspace.Setup = {}));
     })(Workspace = Pzl.Workspace || (Pzl.Workspace = {}));
 })(Pzl || (Pzl = {}));

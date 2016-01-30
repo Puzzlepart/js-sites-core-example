@@ -43,6 +43,11 @@ module Pzl.Workspace.Setup {
         UpdateWebPropertyBag("_Port_WebConfigured", "1").then(() => def.resolve());        
         return def.promise();
     }
+    function SetNotConfigured() {
+        var def = jQuery.Deferred();
+        UpdateWebPropertyBag("_Port_WebConfigured", "0").then(() => def.resolve());        
+        return def.promise();
+    }
     function Reload() {
         window.location.href = window.location.href; 
     }
@@ -77,8 +82,10 @@ module Pzl.Workspace.Setup {
     
         Pzl.Sites.Core.init(siteTemplateConfig, 
             { 
-                On: true, 
-                LoggingFolder: `${_spPageContextInfo.siteServerRelativeUrl}/siteassets/js-sites-core/logs` 
+                "Logging": 
+                { 
+                    "On": true, 
+                    "LoggingFolder": _spPageContextInfo.siteServerRelativeUrl + "/SiteAssets/logs" }
             }
         ).then(() => {               
             SetIsConfigured().then(() => Reload());
@@ -87,6 +94,13 @@ module Pzl.Workspace.Setup {
     export function AttemptConfiguration() {
         GetSiteTemplate().then(siteTemplate => {
             SetupSite(siteTemplate);
+        });
+    }
+    export function RerunConfiguration() {
+        SetNotConfigured().then(() => {
+            GetSiteTemplate().then(siteTemplate => {
+                SetupSite(siteTemplate);
+            });
         });
     }
 }
