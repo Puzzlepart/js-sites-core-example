@@ -1,0 +1,4 @@
+<pnp:WebSettings 
+    xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema"
+    WelcomePage="SitePages/Createsite.aspx" > 
+</pnp:WebSettings>

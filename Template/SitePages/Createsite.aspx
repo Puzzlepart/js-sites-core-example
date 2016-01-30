@@ -27,23 +27,18 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
 	<div class="newCollabPage">
-		<h1>Opprett nytt samhandlingsrom</h1>
+		<h1>Create sites from pzl-sites-core example</h1>
 	    <div id="collabinputform" class="collabInputForm">
-	        <label for="collabNameInput">Navn <span>*</span></label>
-            <input id="collabNameInput" type="text" placeholder="Samhandlingsrommets navn" autofocus required />
-	        <label for="collabUrlInput">URL-kortnavn <span>*</span></label>
-            <input id="collabUrlInput" type="text" placeholder="Kortnavn som brukes i URL" required pattern="[a-zA-Z-\d]{3,20}" />
+	        <label for="collabNameInput">Name <span>*</span></label>
+            <input id="collabNameInput" type="text" placeholder="Site name" autofocus required />
+	        <label for="collabUrlInput">URL shortname<span>*</span></label>
+            <input id="collabUrlInput" type="text" placeholder="URL shortname" required pattern="[a-zA-Z-\d]{3,20}" />
             <label id="collabUrlPreview"></label>
-			<div id="collabUrlInputValidation" class="validationMessage" style="display:none">URL-kortnavnet kan bare inneholde bokstaver (utenom æøå), tall og bindestrek og må være mellom 3 og 20 tegn langt.</div>
-	        <label for="collabDescriptionInput">Beskrivelse</label>
-            <textarea id="collabDescriptionInput" type="text" placeholder="Beskrivelse av Samhandlingsrommet"></textarea>
+			<div id="collabUrlInputValidation" class="validationMessage" style="display:none">Invalid shortname</div>
+	        <label for="collabDescriptionInput">Description</label>
+            <textarea id="collabDescriptionInput" type="text" placeholder="Site description"></textarea>
 	        <div id="collabFormValidation" class="validationMessage"></div>
-	        <button id="createCollabBtn" onclick="Hemit.MP.Provisioning.Create(); return false;">Opprett samhandlingsrom</button>
-	    </div> 
-		<div id="gtoldbrowser" style="display:none;">
-	        Opprettelse av prosjekter krever at du oppgraderer nettleseren til IE10 eller nyere.
+	        <button id="createCollabBtn" onclick="Pzl.Provisioning.Create(); return false;">Create site</button>
 	    </div>
     </div>
-	<script type="text/javascript">
-	</script>
 </asp:Content>

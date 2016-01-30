@@ -1,6 +1,8 @@
 <pnp:Files xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
     <!-- SitePages -->
     <pnp:File Folder="SitePages" Overwrite="true" Src="SitePages\Createsite.aspx" />
+    <!-- Resources -->
+    <pnp:File Folder="Resources/SitePages" Overwrite="true" Src="Resources\SitePages\Home.txt" />
     <!-- SiteAssets -->
     <pnp:File Folder="SiteAssets/js-sites-example/js" Overwrite="true" Src="SiteAssets\js\pzl.provisioning.js" />
     <pnp:File Folder="SiteAssets/js-sites-example/js" Overwrite="true" Src="SiteAssets\js\pzl.workspace.js" />

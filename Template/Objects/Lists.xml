@@ -1,0 +1,3 @@
+<pnp:Lists xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+  <pnp:ListInstance Title="Resources" Url="Resources" TemplateType="101" Hidden="true" />  
+</pnp:Lists>

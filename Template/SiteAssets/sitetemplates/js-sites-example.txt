@@ -74,9 +74,9 @@
   "Files": [
     
     {
-      "Dest": "SitePages/Hjem.aspx",
+      "Dest": "SitePages/Home.aspx",
       "Overwrite": true,
-      "Src": "{resources}/SitePages/Hjem.txt",
+      "Src": "{resources}/SitePages/Home.txt",
       "RemoveExistingWebParts": true,
       "Properties": { },
       "Views": [ ],
