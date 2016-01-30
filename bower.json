@@ -1,0 +1,21 @@
+{
+  "name": "js-sites-core-example",
+  "homepage": "https://github.com/Puzzlepart/js-sites-core-example",
+  "authors": [
+    "tarjeieo <ormestoyl@gmail.com>"
+  ],
+  "description": "Usage of js-sites-core with office pnp template",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "js-sites-core": "^1.8.2"
+  }
+}
