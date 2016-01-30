@@ -16,6 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "js-sites-core": "^1.8.2"
+    "js-sites-core": "dev"
   }
 }
