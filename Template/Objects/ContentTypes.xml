@@ -1,0 +1,5 @@
+<pnp:ContentTypes xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+    <pnp:ContentType ID="0x010200395009F9AF394661B7BB0015360CC286" Name="Generic event" Description="" Group="Custom Content Types">
+    </pnp:ContentType>
+</pnp:ContentTypes>
+ 

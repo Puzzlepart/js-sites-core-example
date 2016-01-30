@@ -1,0 +1,83 @@
+/* Create new form #ugly */
+.validationMessage {
+  color: red;
+}
+.newCollabPage h1 {
+  margin-left: 10px;
+}
+.newCollabPage .collabInputForm {
+  width: 263px;
+  margin-left: 20px;
+}
+.newCollabPage .collabInputForm label {
+  display: inline-table;
+  width: 260px;
+  margin: 0;
+  word-break: break-all;
+}
+.newCollabPage .collabInputForm input,
+.newCollabPage .collabInputForm textarea {
+  width: 250px;
+  margin: 3px 0 10px;
+}
+.newCollabPage .collabInputForm button {
+  float: right;
+  margin: 0;
+}
+.newCollabPage .collabInputForm textarea#CollabDescriptionInput {
+  height: 70px;
+  overflow: auto;
+}
+.newCollabPage .validationMessage {
+  color: red;
+  margin-bottom: 10px;
+}
+.collabFrontPage {
+  width: 100%;
+  padding: 5px 10px 10px 10px;
+}
+.collabFrontPage .rightColumnStatic {
+  display: none;
+}
+.collabFrontPage .collabMetadata {
+  width: 300px;
+  margin-bottom: 20px;
+}
+.collabFrontPage .collabMetadata table {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.collabFrontPage .collabMetadata table td {
+  padding: 3px;
+}
+.collabFrontPage .collabMetadata table tr td:first-child {
+  width: 120px;
+}
+.collabFrontPage .missingMetadataWarning {
+  display: none;
+  color: red;
+  margin: 10px 0;
+}
+.collabFrontPage .collabMetadata a#editPageMetaLink,
+.collabFrontPage .collabMetadata a#editPageMetaLink:visited,
+.collabFrontPage .collabMetadata a#editPageMetaLink:active {
+  color: #666;
+  font-size: .9em;
+  text-decoration: none;
+}
+/* END - Create new form  #uglyEndsHere */
+.control-collaboration-sites a {
+  text-decoration: none;
+  color: black;
+}
+.control-collaboration-sites .collab-create-new {
+  padding-bottom: 15px;
+}
+.control-collaboration-sites .collaboration-site {
+  padding: 6px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 5px;
+}
+.control-collaboration-sites h2 {
+  color: black;
+}

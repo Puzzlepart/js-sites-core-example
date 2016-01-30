@@ -1,0 +1,15 @@
+<pnp:CustomActions xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+    <pnp:SiteCustomActions>
+        <pnp:CustomAction Name="angular" Location="ScriptLink" Sequence="20" ScriptSrc="~sitecollection/SiteAssets/js-sites-example/js/jquery.min.js">
+        </pnp:CustomAction>
+         <pnp:CustomAction Name="Provisioning" Location="ScriptLink" Sequence="50" ScriptSrc="~sitecollection/SiteAssets/js-sites-example/js/pzl.provisioning.js">
+        </pnp:CustomAction>
+         <pnp:CustomAction Name="js-sites-core" Location="ScriptLink" Sequence="50" ScriptSrc="~sitecollection/SiteAssets/js-sites-example/js/pzl.sites.core.js">
+        </pnp:CustomAction>
+         <pnp:CustomAction Name="css" Location="ScriptLink" Sequence="200"  
+            ScriptBlock="document.write('&lt;link rel=&quot;stylesheet&quot; After=&quot;Corev15.css&quot;  type=&quot;text/css&quot; href=&quot;~sitecollection/SiteAssets/js-sites-example/css/collabmain.css&quot;&gt;&lt;/' + 'link&gt;');">
+        </pnp:CustomAction>
+    </pnp:SiteCustomActions> 
+</pnp:CustomActions>
+
+ 

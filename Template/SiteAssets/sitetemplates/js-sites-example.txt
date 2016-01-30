@@ -1,0 +1,98 @@
+{
+  "Lists": [
+    {
+      "Title": "Dokumenter",
+      "Url": "Dokumenter",
+      "TemplateType": 101,
+      "Security": {
+        "BreakRoleInheritance": false,
+        "CopyRoleAssignments": false,
+        "ClearSubscopes": true,
+        "RoleAssignments": [ ]
+      },
+      "Folders": [ ],
+      "ContentTypeBindings": [ ],
+      "Views": [ ]
+    },
+    {
+      "Title": "Calendar",
+      "Url": "Lists/Calendar",
+      "TemplateType": 106,
+      "Security": {
+        "BreakRoleInheritance": false,
+        "CopyRoleAssignments": false,
+        "ClearSubscopes": true,
+        "RoleAssignments": [ ]
+      },
+      "Folders": [ ],
+      "ContentTypeBindings": [ ],
+      "Views": [ ]
+    },
+    {
+      "Title": "Tasks",
+      "Url": "Lists/Tasks",
+      "TemplateType": 171,
+      "Security": {
+        "BreakRoleInheritance": false,
+        "CopyRoleAssignments": false,
+        "ClearSubscopes": true,
+        "RoleAssignments": [ ]
+      },
+      "Folders": [ ],
+      "ContentTypeBindings": [ ],
+      "Views": [ ]
+    },
+    {
+      "Title": "Links",
+      "Url": "Lists/Lists",
+      "TemplateType": 103,
+      "Security": {
+        "BreakRoleInheritance": false,
+        "CopyRoleAssignments": false,
+        "ClearSubscopes": true,
+        "RoleAssignments": [ ]
+      },
+      "Folders": [ ],
+      "ContentTypeBindings": [ ],
+      "Views": [ ]
+    },
+    {
+      "Title": "Meldinger",
+      "Url": "Lists/Meldinger",
+      "TemplateType": 104,
+      "Security": {
+        "BreakRoleInheritance": false,
+        "CopyRoleAssignments": false,
+        "ClearSubscopes": true,
+        "RoleAssignments": [ ]
+      },
+      "Folders": [ ],
+      "ContentTypeBindings": [ ],
+      "Views": [ ]
+    }
+  ],
+  "Files": [
+    
+    {
+      "Dest": "SitePages/Hjem.aspx",
+      "Overwrite": true,
+      "Src": "{resources}/SitePages/Hjem.txt",
+      "RemoveExistingWebParts": true,
+      "Properties": { },
+      "Views": [ ],
+      "WebParts": [ ]
+    }
+  ],
+  "CustomActions": [ ],
+  "Navigation": 
+    {
+        "UseShared": "true",
+        "Quicklaunch": [
+            {
+            "Url": "",
+            "Title": "Hjem"
+            }
+        ]
+    },
+    "ComposedLook": { }
+}
