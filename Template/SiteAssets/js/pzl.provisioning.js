@@ -1,29 +1,118 @@
-/// <reference path="..\..\..\typings\jquery\jquery.d.ts" />
-/// <reference path="..\..\..\typings\sharepoint\SharePoint.d.ts" />
+/// <reference path="..\..\..\typings\tsd.d.ts" />
+var Pzl;
+(function (Pzl) {
+    var Utilities;
+    (function (Utilities) {
+        function getJSON(url, successCallback, errorCallback) {
+            jQuery.ajax({
+                url: url,
+                type: 'get',
+                headers: { "accept": "application/json;odata=verbose" },
+                success: function (response) { successCallback(response.d); },
+                error: function (response) { errorCallback(response); }
+            });
+        }
+        Utilities.getJSON = getJSON;
+        function GetWelcomePageProperties() {
+            var def = jQuery.Deferred();
+            ExecuteOrDelayUntilScriptLoaded(function () {
+                var ctx = SP.ClientContext.get_current();
+                var welcomePage = ctx.get_web().get_lists().getByTitle("Områdesider").getItemById(1);
+                ctx.load(welcomePage);
+                ctx.executeQueryAsync(function () {
+                    def.resolve(welcomePage.get_fieldValues());
+                });
+            }, "sp.js");
+            return def.promise();
+        }
+        Utilities.GetWelcomePageProperties = GetWelcomePageProperties;
+        function GetAllWebProperties() {
+            var def = jQuery.Deferred();
+            ExecuteOrDelayUntilScriptLoaded(function () {
+                var ctx = SP.ClientContext.get_current();
+                var web = ctx.get_web();
+                var allProperties = web.get_allProperties();
+                ctx.load(allProperties);
+                ctx.executeQueryAsync(function () {
+                    def.resolve(allProperties.get_fieldValues());
+                });
+            }, "sp.js");
+            return def.promise();
+        }
+        Utilities.GetAllWebProperties = GetAllWebProperties;
+        function GetWebProperty(prop) {
+            var def = jQuery.Deferred();
+            GetAllWebProperties().then(function (allProperties) {
+                def.resolve(allProperties[prop]);
+            });
+            return def.promise();
+        }
+        Utilities.GetWebProperty = GetWebProperty;
+        function SetWebPropertyValue(prop, value) {
+            var def = jQuery.Deferred();
+            ExecuteOrDelayUntilScriptLoaded(function () {
+                var ctx = SP.ClientContext.get_current();
+                var web = ctx.get_web();
+                web.get_allProperties().set_item(prop, value);
+                web.update();
+                ctx.executeQueryAsync(def.resolve, def.resolve);
+            }, "sp.js");
+            return def.promise();
+        }
+        Utilities.SetWebPropertyValue = SetWebPropertyValue;
+        function EnsureUserInGroup(userId, groupId) {
+            var def = jQuery.Deferred();
+            ExecuteOrDelayUntilScriptLoaded(function () {
+                var ctx = SP.ClientContext.get_current();
+                var siteGroup = ctx.get_web().get_siteGroups().getById(groupId);
+                var user = ctx.get_web().getUserById(userId);
+                siteGroup.get_users().addUser(user);
+                ctx.load(user);
+                ctx.load(siteGroup);
+                ctx.executeQueryAsync(function (sender, args) {
+                    def.resolve(sender, args);
+                }, function (sender, args) {
+                    def.resolve(sender, args);
+                });
+            }, "sp.js");
+            return def.promise();
+        }
+        Utilities.EnsureUserInGroup = EnsureUserInGroup;
+    })(Utilities = Pzl.Utilities || (Pzl.Utilities = {}));
+})(Pzl || (Pzl = {}));
+/// <reference path="..\..\..\typings\tsd.d.ts" />
+/// <reference path="pzl.utilities.ts" />
 var Pzl;
 (function (Pzl) {
     var Provisioning;
     (function (Provisioning) {
         var createWebWaitDialog;
+        var titleSelector = "#WebTitle";
+        var descSelector = "#WebDescription";
+        var urlSelector = "#WebURL";
+        var languageSelector = "#WebLanguage";
+        var inheritPermissionsSelector = "#WebInheritPermissions";
+        var siteTemplateSelector = "#WebTemplate";
         function Create() {
             var createInfo = {
-                url: jQuery("#collabUrlInput").val(),
-                title: jQuery("#collabNameInput").val(),
-                description: jQuery("#collabDescriptionInput").val(),
+                title: jQuery(titleSelector).val(),
+                url: jQuery(urlSelector).val(),
+                description: jQuery(descSelector).val(),
                 webTemplate: "STS#0",
-                webLanguage: 1044,
-                inheritPermissions: false
+                webLanguage: jQuery(languageSelector).val(),
+                siteTemplate: jQuery(siteTemplateSelector).val(),
+                inheritPermissions: jQuery(inheritPermissionsSelector).prop("checked")
             };
             createWebWaitDialog = SP.UI.ModalDialog.showWaitScreenWithNoClose("Creating site", "Please wait...", 130, 600);
-            ProvisionSubsite(createInfo).then((web) => {
-                StampPropertyBag(web).then(() => {
-                    AddCustomActions(web).then(() => {
-                        SetupFeatures(web).then(() => {
+            ProvisionSubsite(createInfo).then(function (web) {
+                StampPropertyBag(web, createInfo.siteTemplate).then(function () {
+                    AddCustomActions(web).then(function () {
+                        SetupFeatures(web).then(function () {
                             RedirectToWeb(web, !createInfo.inheritPermissions);
                         });
                     });
                 });
-            }).fail((sender, args) => {
+            }).fail(function (sender, args) {
                 var sId = SP.UI.Status.addStatus("Failed to create workspace", args.get_message(), true);
                 SP.UI.Status.setStatusPriColor(sId, "red");
                 createWebWaitDialog.close();
@@ -47,11 +136,9 @@ var Pzl;
                 webCreateInfo.set_webTemplate(createInfo.webTemplate);
                 var newWeb = currentWeb.get_webs().add(webCreateInfo);
                 clientContext.load(newWeb);
-                clientContext.executeQueryAsync(() => {
+                clientContext.executeQueryAsync(function () {
                     def.resolve(newWeb);
-                }, (sender, args) => {
-                    def.reject(sender, args);
-                });
+                }, def.reject);
             }, "sp.js");
             return def.promise();
         }
@@ -61,20 +148,12 @@ var Pzl;
         /*
             Setting property bag values for web.
         */
-        function StampPropertyBag(web) {
+        function StampPropertyBag(web, siteTemplate) {
             var def = jQuery.Deferred();
             var clientContext = web.get_context();
             var propBag = web.get_allProperties();
-            propBag.set_item("_Port_WebTemplate", "js-sites-example");
-            propBag.set_item("_Port_WebConfigured", "0");
-            var urlProps = UrlParams();
-            if (Object.keys(urlProps).length > 0) {
-                for (var key in urlProps) {
-                    propBag.set_item(key, urlProps[key]);
-                }
-                ;
-                propBag.set_item("_Port_WelcomePageStamped", "0");
-            }
+            propBag.set_item("SiteTemplate", siteTemplate);
+            propBag.set_item("Web_Configured", "0");
             web.update();
             clientContext.executeQueryAsync(def.resolve, def.reject);
             return def.promise();
@@ -109,22 +188,32 @@ var Pzl;
             var webFeatures = web.get_features();
             webFeatures.remove(new SP.Guid("87294c72-f260-42f3-a41b-981a2ffce37a"), true);
             web.update();
-            clientContext.executeQueryAsync(() => {
-                def.resolve();
-            }, () => {
-                def.reject();
-            });
+            clientContext.executeQueryAsync(def.resolve, def.reject);
             return def.promise();
         }
         /*
             Redirecting to web.
         */
         function RedirectToWeb(web, permsetup) {
-            document.location.href = `${web.get_url()}${permsetup ? '/_layouts/15/permsetup.aspx?hideCancel=1' : ''}`;
+            document.location.href = "" + web.get_url() + (permsetup ? '/_layouts/15/permsetup.aspx?hideCancel=1' : '');
         }
-        function Cancel() {
-            alert('Creating');
+        function RetrieveTemplates() {
+            Pzl.Utilities.getJSON(_spPageContextInfo.siteServerRelativeUrl + "/_api/web/GetFolderByServerRelativeUrl('" + _spPageContextInfo.siteServerRelativeUrl + "/SiteTemplates')/Files?$select=Title,Name&$orderby=TimeLastModified desc", function (response) {
+                response.results.forEach(function (r) {
+                    jQuery(siteTemplateSelector).append("<option value='" + r.Name.split(".")[0] + "'>" + r.Title + "</option>");
+                });
+                jQuery(siteTemplateSelector).removeAttr("disabled");
+                jQuery(siteTemplateSelector).find("option").first().attr("selected", "");
+            }, function () {
+            });
         }
-        Provisioning.Cancel = Cancel;
+        function AutofillUrl() {
+            jQuery(titleSelector).keyup(function () { jQuery(urlSelector).val(jQuery(this).val().split(' ').join('-')); });
+        }
+        function IntializeForm() {
+            RetrieveTemplates();
+            AutofillUrl();
+        }
+        _spBodyOnLoadFunctions.push(IntializeForm);
     })(Provisioning = Pzl.Provisioning || (Pzl.Provisioning = {}));
 })(Pzl || (Pzl = {}));

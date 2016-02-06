@@ -1,5 +1,5 @@
 <pnp:ContentTypes xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
-    <pnp:ContentType ID="0x01020014BE47B8DB4346F0A9EBD92183993040" Name="Custom event" Description="" Group="Custom Content Types"></pnp:ContentType>
-    <pnp:ContentType ID="0x010100153373331FC74B178F6411057C1CFEB4" Name="Custom document" Description="" Group="Custom Content Types"></pnp:ContentType>
+    <pnp:ContentType ID="0x01020014BE47B8DB4346F0A9EBD92183993040" Name="Custom Event" Description="" Group="Custom Content Types"></pnp:ContentType>
+    <pnp:ContentType ID="0x010100153373331FC74B178F6411057C1CFEB4" Name="Custom Document" Description="" Group="Custom Content Types"></pnp:ContentType>
 </pnp:ContentTypes>
  

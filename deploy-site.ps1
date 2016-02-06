@@ -60,6 +60,15 @@ Write-Host "--------------------------------------------------------------------
 
 $web = Get-SPOWeb 
 
+PrintSectionHeader -Title "Compiling TypeScript"
+Get-ChildItem .\Template\SiteAssets\ts\ | ForEach-Object {
+    $ts = $_.FullName;
+    $js = $_.FullName.Replace(".ts", ".js");
+    $js = $js.Replace("\ts\", "\js\")
+    Write-Host "Output: $($js)"
+    tsc --out $js $ts | Out-Null
+}
+
 PrintSectionHeader -Title "Applying template"
 Apply-SPOProvisioningTemplate Template/template.xml -Web $web -ErrorAction Stop
 

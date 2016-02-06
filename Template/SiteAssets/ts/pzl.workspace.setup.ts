@@ -1,107 +1,67 @@
-/// <reference path="..\..\..\typings\sharepoint\SharePoint.d.ts" />
+/// <reference path="..\..\..\typings\tsd.d.ts" />
+/// <reference path="pzl.utilities.ts" />
 
 module Pzl.Workspace.Setup {
-    function GetWebProperties() {
-        var def = jQuery.Deferred();
-        ExecuteOrDelayUntilScriptLoaded(function() {
-            var clientContext = SP.ClientContext.get_current();
-            var web = clientContext.get_web();  
-            var allProperties = web.get_allProperties();
-            clientContext.load(allProperties);
-            clientContext.executeQueryAsync(
-                () => {
-                    def.resolve(allProperties.get_fieldValues());
-                }, 
-                () => {
-                    def.reject();
-                });
-        }, "sp.js");
-        
-        return def.promise();
-    }
-    function UpdateWebPropertyBag(key, value) {
-        var def = jQuery.Deferred();
-         
-        const context = SP.ClientContext.get_current();
-		const web = context.get_web();
-		var allProperties = web.get_allProperties();
-        allProperties.set_item(key, value);
-		context.load(web);
-		web.update();
-		context.executeQueryAsync(
-			(sender, args) => {
-				def.resolve();
-			},
-			(sender, args) => {
-				def.resolve();
-			});
-            
-        return def.promise();
-    }
     function SetIsConfigured() {
         var def = jQuery.Deferred();
-        UpdateWebPropertyBag("_Port_WebConfigured", "1").then(() => def.resolve());        
-        return def.promise();
-    }
-    function SetNotConfigured() {
-        var def = jQuery.Deferred();
-        UpdateWebPropertyBag("_Port_WebConfigured", "0").then(() => def.resolve());        
+        Utilities.SetWebPropertyValue("Web_Configured", "1").then(() => def.resolve());
         return def.promise();
     }
     function Reload() {
-        window.location.href = window.location.href; 
+        window.location.href = window.location.href;
     }
-    function GetSiteTemplateConfig(siteTemplate : string) {
+    function GetSiteTemplateConfig(siteTemplate: string) {
         var def = jQuery.Deferred();
-        
-        jQuery.getJSON(`${_spPageContextInfo.siteAbsoluteUrl}/siteassets/js-sites-example/sitetemplates/${siteTemplate}.txt`, (json) => {
+
+        jQuery.getJSON(`${_spPageContextInfo.siteAbsoluteUrl}/SiteTemplates/${siteTemplate}.txt`, (json) => {
             def.resolve(json);
-        }).fail(() => {
-            def.resolve(null);
-        })
-        
+        }).fail(def.reject);
+
         return def.promise();
     }
-    function GetSiteTemplate() {
+    function GetSiteTemplate(tmpl) {
         var def = jQuery.Deferred();
-        
-        GetWebProperties().then(allProperties => {
-            var isConfigured = (allProperties["_Port_WebConfigured"] == "1");
-            if(isConfigured) def.resolve(null);
-            var siteTemplate = allProperties["_Port_WebTemplate"];
-            
-            GetSiteTemplateConfig(siteTemplate).then(configJson => {
-                def.resolve(configJson);
-            })
-        });
-        
+
+        GetSiteTemplateConfig(tmpl).done(json => {
+            def.resolve(json);
+        }).fail(def.reject);
+
         return def.promise();
     }
     export function SetupSite(siteTemplateConfig) {
-        if(siteTemplateConfig == null) { return; }
-    
-        Pzl.Sites.Core.init(siteTemplateConfig, 
-            { 
-                "Logging": 
-                { 
-                    "On": true, 
-                    "LoggingFolder": _spPageContextInfo.siteServerRelativeUrl + "/SiteAssets/logs" }
+        Pzl.Sites.Core.init(siteTemplateConfig, {
+            WaitMessage: {
+                Header: "Applying template",
+                Content: "Shouldn't take long",
+                ShowProgress: true,
+                ProgressOverrides: {
+                    "PropertyBagEntries": "Stamping web properties",
+                    "Security": "Setting up permissions",
+                    "Lists": "Setting up lists, fields and content types",
+                    "CustomActions": "Setting up custom actions",
+                    "Files": "Adding files and webparts",
+                    "Navigation": "Setting up your quicklaunch",
+                    "ComposedLook": "Applying theme"
+                }
+            },
+            Logging: {
+                On: true,
+                LoggingFolder: `${_spPageContextInfo.siteServerRelativeUrl}/Logs`
             }
-        ).then(() => {               
+        }).then(() => {
             SetIsConfigured().then(() => Reload());
         });
     }
     export function AttemptConfiguration() {
-        GetSiteTemplate().then(siteTemplate => {
-            SetupSite(siteTemplate);
-        });
-    }
-    export function RerunConfiguration() {
-        SetNotConfigured().then(() => {
-            GetSiteTemplate().then(siteTemplate => {
+        Utilities.GetAllWebProperties().then((properties: any) => {
+            var isConfigured = properties.Web_Configured == "1";
+            if (isConfigured) return;
+            GetSiteTemplate(properties.SiteTemplate).done(siteTemplate => {
                 SetupSite(siteTemplate);
+            }).fail(() => {
+                console.error("The provided template is invalid.");
             });
         });
     }
 }
-_spBodyOnLoadFunctions.push(Pzl.Workspace.Setup.AttemptConfiguration);
+(() => { Pzl.Workspace.Setup.AttemptConfiguration(); })();

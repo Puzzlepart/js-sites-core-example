@@ -1,6 +1,6 @@
 <pnp:Files xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
     <!-- SitePages -->
-    <pnp:File Folder="SitePages" Overwrite="true" Src="SitePages\Createsite.aspx" />
+    <pnp:File Folder="SitePages" Overwrite="true" Src="SitePages\Create site.aspx" />
     <!-- Resources -->
     <pnp:File Folder="Resources/SitePages" Overwrite="true" Src="Resources\SitePages\Home.txt" />
     <!-- SiteAssets -->
@@ -10,5 +10,11 @@
     <pnp:File Folder="SiteAssets/js-sites-example/js" Overwrite="true" Src="..\bower_components\js-sites-core\dist\pzl.sites.core.js" />
     <pnp:File Folder="SiteAssets/js-sites-example/js" Overwrite="true" Src="..\bower_components\jquery\dist\jquery.min.js" />
     <pnp:File Folder="SiteAssets/js-sites-example/css" Overwrite="true" Src="SiteAssets\css\collabmain.css" /> 
-    <pnp:File Folder="SiteAssets/js-sites-example/sitetemplates" Overwrite="true" Src="SiteAssets\sitetemplates\js-sites-example.txt" />
+    
+    <!-- Site Templates -->
+    <pnp:File Folder="SiteTemplates" Overwrite="true" Src="Js-Sites-Core-Templates\js-sites-example.txt">
+        <pnp:Properties>
+            <pnp:Property Key="Title" Value="Example Site"></pnp:Property>
+        </pnp:Properties>
+    </pnp:File>
 </pnp:Files> 

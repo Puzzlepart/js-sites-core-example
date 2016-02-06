@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "js-sites-core": "dev"
+    "js-sites-core": "dev",
+    "jquery": "latest"
   }
 }
